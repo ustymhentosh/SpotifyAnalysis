@@ -50,7 +50,7 @@ def get_artist_top_track(artist_id, token, country = '', market = ''):
     return response.json()['tracks'][0]['name'], response.json()['tracks'][0]['id']
 
 
-def get_track_markets(track_id):
+def get_track_markets(track_id, token):
     """ gets track markets """
     search_url = f'https://api.spotify.com/v1/tracks/{track_id}'
     request_headers = {'Authorization': f'Bearer {token}'}
@@ -79,7 +79,7 @@ you want(if not -> click enter) here >>> ')
         track_id = get_artist_top_track(artist_id, token,\
             specific_country, specific_market)[1]
         track_name = get_artist_top_track(artist_id, token)[0]
-        track_markets = get_track_markets(track_id)
+        track_markets = get_track_markets(track_id, token)
 
         dct = {'artist_id': artist_id , 'artist_name': artist_name,\
             'top_track_name': track_name, 'top_track_id': track_id, 'track_markets': track_markets}
