@@ -4,6 +4,15 @@ import requests
 
 
 def get_token(CLIENT_ID, CLIENT_SECRET):
+    """ 
+    Gets acces token from id and sectet
+
+    Args:
+        CLIENT_ID(str): client id
+        CLIENT_SECRET(str): client secret
+    Returns:
+        (str): access token
+    """
 
     auth_code = f'{CLIENT_ID}:{CLIENT_SECRET}'
 
@@ -24,18 +33,38 @@ def get_token(CLIENT_ID, CLIENT_SECRET):
 
 
 def get_artist_id_and_name(search_name, token):
-    """ Gets artist id """
+    """ 
+    Gets artist name and id 
+
+    Args:
+        search_name(str): query to seach
+        token(str): access token
+    Returns:
+        (tuple): artist name and id 
+    """
     # searching input
     search_url = 'https://api.spotify.com/v1/search'
     request_params = {'query': search_name, 'type': 'artist'}
     request_headers = {'Authorization': f'Bearer {token}'}
+
     response = requests.get(search_url, params=request_params, headers=request_headers)
     response = response.json()["artists"]['items'][0]
+
     return response['name'], response['id']
 
 
 def get_artist_top_track(artist_id, token, country = '', market = ''):
-    """ gets artist's top track """
+    """
+    Gets artist's top track
+
+    Argas:
+        artist_id(str): artists id
+        token(str): access token
+        country(str): (optional) country where to search
+        market(str): (optional) market where to search
+    Returns:
+        (tuple): artist top track name and id
+    """
     request_params = {'market': 'US'}
     if country:
         request_params['country'] = country
@@ -43,18 +72,28 @@ def get_artist_top_track(artist_id, token, country = '', market = ''):
         request_params['market'] = market
     
     request_headers = {'Authorization': f'Bearer {token}'}
-
     search_url = f'https://api.spotify.com/v1/artists/{artist_id}/top-tracks'
+
     response = requests.get(search_url, params=request_params, headers=request_headers)
 
     return response.json()['tracks'][0]['name'], response.json()['tracks'][0]['id']
 
 
 def get_track_markets(track_id, token):
-    """ gets track markets """
+    """
+    Gets track markets
+
+    Args:
+        track_id(str): ID of track
+        token(str): Access token
+    Retuns:
+        (list): available markets
+    """
     search_url = f'https://api.spotify.com/v1/tracks/{track_id}'
     request_headers = {'Authorization': f'Bearer {token}'}
+
     response = requests.get(search_url, headers=request_headers)
+
     return response.json()['album']['available_markets']
 
 
@@ -89,5 +128,3 @@ you want(if not -> click enter) here >>> ')
     except:
         print('Something went wrong, maybe check CLIENT_ID/SECTER')
 
-
-   
