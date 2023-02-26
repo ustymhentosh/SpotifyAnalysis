@@ -1,0 +1,2 @@
+Python 3.x
+Spotify CLIENT ID, CLIENT SECRET
